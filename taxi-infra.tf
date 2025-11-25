@@ -108,7 +108,7 @@ resource "aws_security_group" "demo-sg" {
 }
 
 module "sgs" {
-  source = "../sg_eks"
+  source = "./sg_eks"
   vpc_id = data.aws_vpc.default.id
 }
 
