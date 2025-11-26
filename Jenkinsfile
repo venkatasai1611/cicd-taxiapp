@@ -87,6 +87,36 @@ environment {
                 }
             }
         }
+       stage("Deploy") {
+
+            steps {
+
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-creds']]) {
+
+                    sh '''
+
+                        echo "===== AWS Authentication Check ====="
+
+                        aws sts get-caller-identity
+ 
+                        echo "===== Updating kubeconfig ====="
+
+                        aws eks update-kubeconfig --name expense --region us-east-1
+ 
+                        echo "===== Applying Kubernetes Manifests ====="
+
+                        chmod +x deploy.sh
+
+                        ./deploy.sh
+
+                    '''
+
+                }
+
+            }
+
+        }
+ 
         
     }
 }
